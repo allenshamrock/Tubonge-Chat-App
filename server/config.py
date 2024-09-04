@@ -6,6 +6,10 @@ from sqlalchemy import MetaData
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from flask_bcrypt import Bcrypt
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # import secrets
 
@@ -13,10 +17,10 @@ from flask_bcrypt import Bcrypt
 # print(secret_key)
 
 app=Flask(__name__)
-app.config['SECRET_KEY'] = '4d6538529ce578e5c735134bfe7325c852133093554608b465c132eab8efa50a'
-app.config['SQLALCHEMY_DATABASE_URI'] ='sqllite///tubongedb'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] ='sqllite///tubonge.db'
 app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'f024b7b20d71dc8d51c7b482f3260bd3f416f848e11972eea83f5d4a8fac573f'
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 app.json.compact = False
 
 metadata = MetaData(naming_convention={
