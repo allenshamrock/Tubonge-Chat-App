@@ -11,6 +11,8 @@ class User(db.Model):
     image_url = db.Column(db.String,nullable= False)
     password_hash = db.Column(db.String(30), nullabale=False)
     bio = db.Column(db.String(50),nullable=False)
+    is_online = db.Column(db.Boolean,default=False)
+
 
     @validates('username')
     def validate_username(self,key,value):
@@ -29,6 +31,11 @@ class User(db.Model):
         
     def check_password(self,password):
         return bcrypt.check_password_hash(self.password_hash,password)
+    
+    message_sent = db.relationship(
+        'Messsage', backref='sender', lazy='dynamic', foreign_keys='messages.sender_id')
+    message_sent = db.relationship(
+        'Messsage', backref='reciver', lazy='dynamic', foreign_keys='messages.reciver_id')
 
 
 class Message(db.Model):
@@ -50,6 +57,11 @@ class Conversation(db.Model):
     created_at = db.Column(db.Datetime,default=datetime.utcnow())
 
 
+    participants = db.relationship(
+        'User', secondary='conversation_participants', backref='conversations', lazy='dynamic')
+    messages = db.relationship('Message', backref='conversation', lazy='dynamic')
+
+
 class ConversationParticipants(db.Model):
     __tablename__='conversation_participants'
 
@@ -66,6 +78,10 @@ class ChatRoom(db.Model):
     description = db.Column(db.String(255))
     created_by_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
     created_at = db.Column(db.Datetime,default=False)
+
+    messages = db.relationship('Message', backref='chat_room', lazy='dynamic')
+    members = db.relationship(
+        'User', secondary='chat_room_members', backref='chat_rooms', lazy='dynamic')
 
 
 class ChatRoomMember(db.Model):
