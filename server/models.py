@@ -38,6 +38,28 @@ class User(db.Model):
         'Messsage', backref='reciver', lazy='dynamic', foreign_keys='messages.reciver_id')
 
 
+class BlockedUser(db.Model):
+    __tablename__ = 'blocked_users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    blocker_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id'), nullable=False)  # User who blocks
+    blocked_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id'), nullable=False)  # User who is blocked
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+   
+    blocker = db.relationship('User', foreign_keys=[
+                              blocker_id], backref='blocked_users')
+    blocked = db.relationship('User', foreign_keys=[
+                              blocked_id], backref='blocked_by')
+
+    __table_args__ = (
+        db.UniqueConstraint('blocker_id', 'blocked_id', name='unique_block'),
+    )
+
+
+
 class Message(db.Model):
     __tablename__ = 'messages'
 
