@@ -2,40 +2,72 @@ from config import bcrypt,db
 from sqlalchemy.orm import validates
 from datetime import datetime
 
+
+
+
 class User(db.Model):
-    __tablename__='users'
+    __tablename__ = 'users'
 
-    id = db.Column(db.Integer,primary_key = True)
-    username = db.Column(db.String(120),nullable=False, unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120), nullable=False, unique=True)
     name = db.Column(db.String(50), nullable=False)
-    image_url = db.Column(db.String,nullable= False)
-    password_hash = db.Column(db.String(30), nullabale=False)
-    bio = db.Column(db.String(50),nullable=False)
-    is_online = db.Column(db.Boolean,default=False)
-
+    image_url = db.Column(db.String, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    bio = db.Column(db.String(50), nullable=False)
+    is_online = db.Column(db.Boolean, default=False)
 
     @validates('username')
-    def validate_username(self,key,value):
+    def validate_username(self, key, value):
         if User.query.filter_by(username=value).first():
-            raise ValueError('username already exists')
+            raise ValueError('Username already exists')
         return value
-    
+
     @property
     def password(self):
         return self.password_hash
-    
+
     @password.setter
-    def password(self,plain_password):
-        self.password_hash = bcrypt.generate_password_hash(
-            plain_password).decode('utf-8')
-        
-    def check_password(self,password):
-        return bcrypt.check_password_hash(self.password_hash,password)
-    
-    message_sent = db.relationship(
-        'Messsage', backref='sender', lazy='dynamic', foreign_keys='messages.sender_id')
-    message_sent = db.relationship(
-        'Messsage', backref='reciver', lazy='dynamic', foreign_keys='messages.reciver_id')
+    def password(self, plain_password):
+        self.password_hash = bcrypt.generate_password_hash(plain_password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
+
+    # Relationships for messages
+    messages_sent = db.relationship(
+        'Message', backref='sender', lazy='dynamic', foreign_keys='Message.sender_id')
+    messages_received = db.relationship(
+        'Message', backref='receiver', lazy='dynamic', foreign_keys='Message.receiver_id')
+
+    # Relationship for friends
+    friends = db.relationship(
+        'User',
+        secondary='friendships',
+        primaryjoin='User.id == Friendship.user_id',
+        secondaryjoin='User.id == Friendship.friend_id',
+        backref='friend_of',
+        lazy='dynamic'
+    )
+
+
+class Friendship(db.Model):
+    __tablename__ = 'friendships'
+
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id'), primary_key=True)
+    friend_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id'), primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(10), default='pending')
+
+    # Define relationships to the User table
+    user = db.relationship('User', foreign_keys=[user_id])
+    friend = db.relationship('User', foreign_keys=[friend_id])
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'friend_id', name='unique_friendship'),
+    )
+
 
 
 class BlockedUser(db.Model):
