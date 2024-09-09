@@ -1,12 +1,12 @@
-from models import Freindship
+from models import Friendship
 from flask import session,make_response,request,jsonify
 from flask_restful import Resource
 from config import db
 
 
-class FreindshipRequest(Resource):
+class FriendshipRequest(Resource):
     def get(self):
-        friends = [friend.to_dict() for friend in Freindship.query.all()]
+        friends = [friend.to_dict() for friend in Friendship.query.all()]
         return jsonify(friends)
     
     def post(self):
@@ -17,12 +17,12 @@ class FreindshipRequest(Resource):
         if user_id == friend_id:
             return jsonify({'message':'You cannot send a freind request to yourself'})
         
-        existing_request = Freindship.query.filter_by(user_id=user_id,friend_id=friend_id)
+        existing_request = Friendship.query.filter_by(user_id=user_id,friend_id=friend_id)
 
         if existing_request:
             return jsonify({'message':'Freind request already sent '})
         
-        new_request = Freindship(user_id= user_id, friend_id=friend_id)
+        new_request = Friendship(user_id= user_id, friend_id=friend_id)
         db.session.add(new_request)
         db.session.commit()
 
@@ -30,13 +30,13 @@ class FreindshipRequest(Resource):
 
 class FrienshipRequestId(Resource):
     def get(self,id):
-        friend = Freindship.query.get_or_404(id)
+        friend = Friendship.query.get_or_404(id)
         return jsonify(friend.to_dict())
     
     def patch(self,id):
         data = request.get_json()
         action = data.get('action')
-        friend_request = Freindship.query.get_or_404(id)
+        friend_request = Friendship.query.get_or_404(id)
 
 
         if action not in ['accept','decline']:

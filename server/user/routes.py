@@ -10,16 +10,20 @@ import os
 
 load_dotenv()
 
+CLOUD_NAME = os.getenv('CLOUD_NAME')
+API_KEY = os.getenv('API_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
+
 # Cloudinary configs
 cloudinary.config(
     cloud_name = os.getenv('CLOUD_NAME'),
-    api_key = os.getenv('CLOUD_API_KEY'),
-    secret_key = os.getenv('CLOUD_SECRET_KEY')
+    api_key = os.getenv('API_KEY'),
+    secret_key = os.getenv('SECRET_KEY')
 )
 
 if not all ([cloudinary.config().cloud_name,cloudinary.config().api_key,cloudinary.config().secret_key]):
     raise ValueError(
-        "No cloudinary configurations done.Ensure CLOUS_NAME,API_KEY,SECRET_KEY are set"
+        "No cloudinary configurations done.Ensure CLOUD_NAME,API_KEY,SECRET_KEY are set"
     )
 
 class Users(Resource):

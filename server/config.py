@@ -11,26 +11,30 @@ import os
 
 load_dotenv()
 
-# import secrets
-
-# secret_key = secrets.token_hex(32)
-# print(secret_key)
-
-app=Flask(__name__)
+app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] ='sqllite///tubonge.db'
-app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tubonge.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Corrected typo
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 app.json.compact = False
 
-metadata = MetaData(naming_convention={
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-})
 
-db = SQLAlchemy(metadata=MetaData)
-migrate = Migrate(app,db)
+metadata = MetaData()
+
+
+# metadata = MetaData(naming_convention={
+#     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+# })
+# Corrected initialization
+db = SQLAlchemy(metadata=metadata)  # Pass the metadata object here
+migrate = Migrate(app, db)
 CORS(app)
-bcrypt = Bcrypt()
+bcrypt = Bcrypt(app)  # Initialize bcrypt with the app
 api = Api(app)
 jwt = JWTManager(app)
+
 db.init_app(app)
+
+
+

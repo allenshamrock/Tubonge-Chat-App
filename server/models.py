@@ -99,30 +99,30 @@ class Message(db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('users.id'),nullable=False)
     recivers_id = db.Column(db.Integer, db.ForeignKey('users.id'),nullable=False)
     content = db.Column(db.Text,nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     is_seen = db.Column(db.Boolean,default=False)
     is_deleted = db.Column(db.Boolean,default=False)
 
 
-class Conversation(db.Model):
-    __tablename__ = 'conversations'
+# class Conversation(db.Model):
+#     __tablename__ = 'conversations'
 
-    id = db.Column(db.Integer,primary_key=True)
-    created_at = db.Column(db.Datetime,default=datetime.utcnow())
-
-
-    participants = db.relationship(
-        'User', secondary='conversation_participants', backref='conversations', lazy='dynamic')
-    messages = db.relationship('Message', backref='conversation', lazy='dynamic')
+#     id = db.Column(db.Integer,primary_key=True)
+#     created_at = db.Column(db.Datetime,default=datetime.utcnow())
 
 
-class ConversationParticipants(db.Model):
-    __tablename__='conversation_participants'
+#     participants = db.relationship(
+#         'User', secondary='conversation_participants', backref='conversations', lazy='dynamic')
+#     messages = db.relationship('Message', backref='conversation', lazy='dynamic')
 
-    id = db.Column(db.Integer,primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    conversation_id = db.Column(db.Integer, db.ForeignKey('conversation.id'),nullable=False)
-    joined_at = db.Column(db.Datetime, default=datetime.utcnow())
+
+# class ConversationParticipants(db.Model):
+#     __tablename__='conversation_participants'
+
+#     id = db.Column(db.Integer,primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+#     conversation_id = db.Column(db.Integer, db.ForeignKey('conversation.id'),nullable=False)
+#     joined_at = db.Column(db.Datetime, default=datetime.utcnow())
 
 
 class ChatRoom(db.Model):
@@ -148,7 +148,7 @@ class ChatRoom(db.Model):
 
         # Automatically add the creator as an admin member
         admin_member = ChatRoomMember(
-            user_id=created_by_id, chat_room=self, role='admin')
+        user_id=created_by_id, chat_room=self, role='admin')
         db.session.add(admin_member)
         db.session.commit()
 
@@ -168,28 +168,27 @@ class FileAttchment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     file_type = db.Column(db.String)
-    message_id = db.Column(db.Integer, db.ForeignKey('message.id'),nullable=False)
-    # file_path = db.Column(db.String,nullable=False)
-    created_at = db.Column(db.Datetime,default=datetime.utcnow())
+    message_id = db.Column(db.Integer, db.ForeignKey('messages.id'),nullable=False)
+    created_at = db.Column(db.DateTime,default=datetime.utcnow)
 
 class Notification(db.Model):
     __tablename__ = 'notifications'
 
     id = db.Column(db.Integer,primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     message = db.Column(db.Text,nullable=False)
-    created_at = db.Column(db.Datetime,default=datetime.utcnow())
+    created_at = db.Column(db.DateTime,default=datetime.utcnow)
     is_seen = db.Column(db.Boolean,default=False)
 
 
-class TypingIndicator(db.Model):
-    __tablename__ = 'typing_indicators'
+# class TypingIndicator(db.Model):
+#     __tablename__ = 'typing_indicators'
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    conversation_id = db.Column(db.Integer, db.ForeignKey(
-        'conversations.id'), nullable=False)
-    is_typing = db.Column(db.Boolean, default=False)
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+#     conversation_id = db.Column(db.Integer, db.ForeignKey(
+#         'conversations.id'), nullable=False)
+#     is_typing = db.Column(db.Boolean, default=False)
 
 
     
