@@ -169,7 +169,7 @@ class FileAttchment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     file_type = db.Column(db.String)
     message_id = db.Column(db.Integer, db.ForeignKey('message.id'),nullable=False)
-    file_path = db.Column(db.String,nullable=False)
+    # file_path = db.Column(db.String,nullable=False)
     created_at = db.Column(db.Datetime,default=datetime.utcnow())
 
 class Notification(db.Model):

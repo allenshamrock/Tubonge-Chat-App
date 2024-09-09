@@ -1,6 +1,6 @@
 from models import ChatRoomMember, ChatRoom
 from flask_restful import Resource
-from flask import make_response, request, jsonify
+from flask import make_response, request, jsonify,session
 from config import db
 # from datetime import datetime
 
