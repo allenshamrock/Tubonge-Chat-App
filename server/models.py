@@ -95,8 +95,8 @@ class BlockedUser(db.Model):
 class Message(db.Model):
     __tablename__ = 'messages'
 
-    id = db.Column(db.Interger, primary_key=True)
-    sender_id = db.Column(db.Interger, db.ForeignKey('users.id'),nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'),nullable=False)
     recivers_id = db.Column(db.Integer, db.ForeignKey('users.id'),nullable=False)
     content = db.Column(db.Text,nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow())
@@ -107,7 +107,7 @@ class Message(db.Model):
 class Conversation(db.Model):
     __tablename__ = 'conversations'
 
-    id = db.Column(db.Interger,primary_key=True)
+    id = db.Column(db.Integer,primary_key=True)
     created_at = db.Column(db.Datetime,default=datetime.utcnow())
 
 
@@ -121,31 +121,47 @@ class ConversationParticipants(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    conversation_id = db.Column(db.Interger, db.ForeignKey('conversation.id'),nullable=False)
+    conversation_id = db.Column(db.Integer, db.ForeignKey('conversation.id'),nullable=False)
     joined_at = db.Column(db.Datetime, default=datetime.utcnow())
 
-class ChatRoom(db.Model):
-    __tablename__='chatrooms'
 
-    id = db.Column(db.Interger,primary_key=True)
-    name = db.Column(db.String(100),nullable=False)
+class ChatRoom(db.Model):
+    __tablename__ = 'chatrooms'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255))
-    created_by_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
-    created_at = db.Column(db.Datetime,default=False)
+    created_by_id = db.Column(
+        db.Integer, db.ForeignKey('users.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     messages = db.relationship('Message', backref='chat_room', lazy='dynamic')
     members = db.relationship(
-        'User', secondary='chat_room_members', backref='chat_rooms', lazy='dynamic')
+        'ChatRoomMember', backref='chat_room', lazy='dynamic'
+    )
+
+    def __init__(self, name, description, created_by_id):
+        self.name = name
+        self.description = description
+        self.created_by_id = created_by_id
+        self.created_at = datetime.utcnow()
+
+        # Automatically add the creator as an admin member
+        admin_member = ChatRoomMember(
+            user_id=created_by_id, chat_room=self, role='admin')
+        db.session.add(admin_member)
+        db.session.commit()
 
 
 class ChatRoomMember(db.Model):
     __tablename__ = 'chat_room_members'
 
-    id = db.Column(db.Interger,primary_key=True)
-    user_id = db.Column(db.Interger,db.FoeignKey('users.id'),nullable=False)
-    chat_room_id = db.Column(db.Integer,db.ForeignKey('chat_room.id'),nullable=False)
-    joined_at =db.Column(db.Datetime, default=datetime.utcnow())
-
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    chat_room_id = db.Column(db.Integer, db.ForeignKey(
+        'chatrooms.id'), nullable=False)
+    role = db.Column(db.String(10), default='member')
+    joined_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class FileAttchment(db.Model):
     __tablename__ = 'file_attachments'
@@ -164,16 +180,6 @@ class Notification(db.Model):
     message = db.Column(db.Text,nullable=False)
     created_at = db.Column(db.Datetime,default=datetime.utcnow())
     is_seen = db.Column(db.Boolean,default=False)
-
-
-class Friendship(db.Model):
-    __tablename__ = 'friendships'
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    friend_id = db.Column(
-        db.Integer, db.ForeignKey('users.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 class TypingIndicator(db.Model):
