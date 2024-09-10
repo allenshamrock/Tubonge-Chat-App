@@ -1,4 +1,4 @@
-from models import FileAttchment
+from models import FileAttachment
 from config import db,app
 from flask import request,session,make_response,jsonify
 from flask_restful import Resource
@@ -27,7 +27,7 @@ if not all ([cloudinary.config().cloud_name,cloudinary.config().api_key,cloudina
 
 class File(Resource):
     def get(self):
-        files = [file.to_dict() for file in FileAttchment.query.all()]
+        files = [file.to_dict() for file in FileAttachment.query.all()]
         return jsonify(files)
     
     def post(self):
@@ -47,7 +47,7 @@ class File(Resource):
         
         file_url = uplaod_result.get('url')
 
-        new_file = FileAttchment(
+        new_file = FileAttachment(
             file_type = file_url,
             message_id = request.json.get('message_id'),
             created_at = datetime.datetime.utcnow()
@@ -61,11 +61,11 @@ class File(Resource):
 
 class FileId(Resource):
     def get(self,id):
-        file = FileAttchment.query.get_or_404(id)
+        file = FileAttachment.query.get_or_404(id)
         return jsonify(file.to_dict())
     
     def patch(self,id):
-        file = FileAttchment.query.get_or_404(id)
+        file = FileAttachment.query.get_or_404(id)
         data = request.get_json()
 
         for key,value in data.items():
@@ -75,7 +75,7 @@ class FileId(Resource):
     
 
     def delete(self,id):
-        file = FileAttchment.query.get_or_404(id)
+        file = FileAttachment.query.get_or_404(id)
         db.session.add(file)
         db.session.commit()
 

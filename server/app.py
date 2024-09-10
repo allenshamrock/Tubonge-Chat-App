@@ -1,5 +1,5 @@
-from flask_socketio import emit
-from models import Notification,User,Friendship,BlockedUser,Message,ChatRoom,ChatRoomMember,FileAttchment
+# from flask_socketio import emit
+from models import User,Friendship,BlockedUser,Message,ChatRoom,ChatRoomMember,FileAttachment
 from file import file_blueprint
 from freinds import friends_blueprint
 from message import message_blueprint
@@ -9,7 +9,7 @@ from block import block_blueprint
 from user import user_blueprint
 
 # from . import socketio
-from config import app,db
+from config import app
 
 app.register_blueprint(user_blueprint, url_prefix='/user')
 

@@ -1,8 +1,6 @@
-from config import bcrypt,db
+from config import bcrypt, db
 from sqlalchemy.orm import validates
 from datetime import datetime
-
-
 
 
 class User(db.Model):
@@ -28,7 +26,8 @@ class User(db.Model):
 
     @password.setter
     def password(self, plain_password):
-        self.password_hash = bcrypt.generate_password_hash(plain_password).decode('utf-8')
+        self.password_hash = bcrypt.generate_password_hash(
+            plain_password).decode('utf-8')
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
@@ -46,7 +45,8 @@ class User(db.Model):
         primaryjoin='User.id == Friendship.user_id',
         secondaryjoin='User.id == Friendship.friend_id',
         backref='friend_of',
-        lazy='dynamic'
+        lazy='dynamic',
+        overlaps="friend_of,user,friends,friend"
     )
 
 
@@ -61,13 +61,14 @@ class Friendship(db.Model):
     status = db.Column(db.String(10), default='pending')
 
     # Define relationships to the User table
-    user = db.relationship('User', foreign_keys=[user_id])
-    friend = db.relationship('User', foreign_keys=[friend_id])
+    user = db.relationship('User', foreign_keys=[
+                           user_id], overlaps="friends,friend_of")
+    friend = db.relationship('User', foreign_keys=[
+                             friend_id], overlaps="friends,friend_of")
 
     __table_args__ = (
         db.UniqueConstraint('user_id', 'friend_id', name='unique_friendship'),
     )
-
 
 
 class BlockedUser(db.Model):
@@ -80,7 +81,6 @@ class BlockedUser(db.Model):
         'users.id'), nullable=False)  # User who is blocked
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-   
     blocker = db.relationship('User', foreign_keys=[
                               blocker_id], backref='blocked_users')
     blocked = db.relationship('User', foreign_keys=[
@@ -91,38 +91,20 @@ class BlockedUser(db.Model):
     )
 
 
-
 class Message(db.Model):
     __tablename__ = 'messages'
 
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'),nullable=False)
-    recivers_id = db.Column(db.Integer, db.ForeignKey('users.id'),nullable=False)
-    content = db.Column(db.Text,nullable=False)
+    sender_id = db.Column(
+        db.Integer, db.ForeignKey('users.id'), nullable=False)
+    receiver_id = db.Column(
+        db.Integer, db.ForeignKey('users.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    is_seen = db.Column(db.Boolean,default=False)
-    is_deleted = db.Column(db.Boolean,default=False)
-
-
-# class Conversation(db.Model):
-#     __tablename__ = 'conversations'
-
-#     id = db.Column(db.Integer,primary_key=True)
-#     created_at = db.Column(db.Datetime,default=datetime.utcnow())
-
-
-#     participants = db.relationship(
-#         'User', secondary='conversation_participants', backref='conversations', lazy='dynamic')
-#     messages = db.relationship('Message', backref='conversation', lazy='dynamic')
-
-
-# class ConversationParticipants(db.Model):
-#     __tablename__='conversation_participants'
-
-#     id = db.Column(db.Integer,primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-#     conversation_id = db.Column(db.Integer, db.ForeignKey('conversation.id'),nullable=False)
-#     joined_at = db.Column(db.Datetime, default=datetime.utcnow())
+    is_seen = db.Column(db.Boolean, default=False)
+    is_deleted = db.Column(db.Boolean, default=False)
+    chat_room_id = db.Column(db.Integer, db.ForeignKey(
+        'chatrooms.id'))  # Add foreign key for chat room
 
 
 class ChatRoom(db.Model):
@@ -137,8 +119,7 @@ class ChatRoom(db.Model):
 
     messages = db.relationship('Message', backref='chat_room', lazy='dynamic')
     members = db.relationship(
-        'ChatRoomMember', backref='chat_room', lazy='dynamic'
-    )
+        'ChatRoomMember', backref='chat_room', lazy='dynamic')
 
     def __init__(self, name, description, created_by_id):
         self.name = name
@@ -148,7 +129,7 @@ class ChatRoom(db.Model):
 
         # Automatically add the creator as an admin member
         admin_member = ChatRoomMember(
-        user_id=created_by_id, chat_room=self, role='admin')
+            user_id=created_by_id, chat_room=self, role='admin')
         db.session.add(admin_member)
         db.session.commit()
 
@@ -163,38 +144,12 @@ class ChatRoomMember(db.Model):
     role = db.Column(db.String(10), default='member')
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-class FileAttchment(db.Model):
+
+class FileAttachment(db.Model):
     __tablename__ = 'file_attachments'
 
     id = db.Column(db.Integer, primary_key=True)
     file_type = db.Column(db.String)
-    message_id = db.Column(db.Integer, db.ForeignKey('messages.id'),nullable=False)
-    created_at = db.Column(db.DateTime,default=datetime.utcnow)
-
-class Notification(db.Model):
-    __tablename__ = 'notifications'
-
-    id = db.Column(db.Integer,primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
-    message = db.Column(db.Text,nullable=False)
-    created_at = db.Column(db.DateTime,default=datetime.utcnow)
-    is_seen = db.Column(db.Boolean,default=False)
-
-
-# class TypingIndicator(db.Model):
-#     __tablename__ = 'typing_indicators'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-#     conversation_id = db.Column(db.Integer, db.ForeignKey(
-#         'conversations.id'), nullable=False)
-#     is_typing = db.Column(db.Boolean, default=False)
-
-
-    
-
-
-
-
-
-
+    message_id = db.Column(db.Integer, db.ForeignKey(
+        'messages.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
