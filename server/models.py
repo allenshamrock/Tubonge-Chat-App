@@ -1,10 +1,12 @@
 from config import bcrypt, db
 from sqlalchemy.orm import validates
 from datetime import datetime
+from sqlalchemy_serializer import SerializerMixin
 
 
-class User(db.Model):
+class User(db.Model,SerializerMixin):
     __tablename__ = 'users'
+    serialize_only=('username','name','image_url','bio')
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), nullable=False, unique=True)
@@ -31,6 +33,17 @@ class User(db.Model):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
+    
+    def to_dict(self):
+        return {
+            'id':self.id,
+            'username':self.username,
+            'name':self.name,
+            'image_url':self.image_url,
+            'bio':self.bio,
+            'is_online':self.is_online.isoformat() if self.is_online else None
+        }
+
 
     # Relationships for messages
     messages_sent = db.relationship(
@@ -50,9 +63,9 @@ class User(db.Model):
     )
 
 
-class Friendship(db.Model):
+class Friendship(db.Model,SerializerMixin):
     __tablename__ = 'friendships'
-
+    serialize_only = ('user_id','friend_id','created_at','status')
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id'), primary_key=True)
     friend_id = db.Column(db.Integer, db.ForeignKey(
@@ -71,8 +84,9 @@ class Friendship(db.Model):
     )
 
 
-class BlockedUser(db.Model):
+class BlockedUser(db.Model,SerializerMixin):
     __tablename__ = 'blocked_users'
+    serialize_only=('blocker_id','blocked_id','created_at')
 
     id = db.Column(db.Integer, primary_key=True)
     blocker_id = db.Column(db.Integer, db.ForeignKey(
@@ -91,8 +105,9 @@ class BlockedUser(db.Model):
     )
 
 
-class Message(db.Model):
+class Message(db.Model,SerializerMixin):
     __tablename__ = 'messages'
+    serialize_only = ('id','sender_id','reciver_id','content','timestamp','is_seen','is_deleted','chat_room_id')
 
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(
@@ -104,11 +119,25 @@ class Message(db.Model):
     is_seen = db.Column(db.Boolean, default=False)
     is_deleted = db.Column(db.Boolean, default=False)
     chat_room_id = db.Column(db.Integer, db.ForeignKey(
-        'chatrooms.id'))  # Add foreign key for chat room
+        'chatrooms.id'))  
+    
+    def to_dict(self):
+        return{
+            'id':self.id,
+            'sender_id':'self.sender_id',
+            'receiver_id':self.receiver_id,
+            'content':self.content,
+            'timestamp':self.timestamp.isoformat() if self.timestamp else None,
+            'is_seen':self.is_seen,
+            'is_deleted':self.is_deleted,
+            'chat_room_id':self.chat_room_id
+
+        }
 
 
-class ChatRoom(db.Model):
+class ChatRoom(db.Model,SerializerMixin):
     __tablename__ = 'chatrooms'
+    serialize_only = ('id','name','description','created_by_id','created_at')
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -134,8 +163,9 @@ class ChatRoom(db.Model):
         db.session.commit()
 
 
-class ChatRoomMember(db.Model):
+class ChatRoomMember(db.Model,SerializerMixin):
     __tablename__ = 'chat_room_members'
+    serialize_only=('id','user_id','chat_room_id','role','joined_at')
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -144,12 +174,30 @@ class ChatRoomMember(db.Model):
     role = db.Column(db.String(10), default='member')
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    def to_dict(self):
+        return {
+            'id':self.id,
+            'user_id':self.user_id,
+            'chat_room_id':self.chat_room_id,
+            'role':self.role,
+            'joined_at':self.joined_at.isoforamt() if self.joined_at else None
+        }
 
-class FileAttachment(db.Model):
+
+class FileAttachment(db.Model,SerializerMixin):
     __tablename__ = 'file_attachments'
+    serialize_only = ('id','file_type','message_id','created_at')
 
     id = db.Column(db.Integer, primary_key=True)
     file_type = db.Column(db.String)
     message_id = db.Column(db.Integer, db.ForeignKey(
         'messages.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return{
+            'id':self.id,
+            'file_type':self.file_type,
+            'message_id':self.message_id,
+            'created_at':self.created_at
+        }
