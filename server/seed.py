@@ -14,7 +14,7 @@ with app.app_context():
     user1 = User(
         username='john_doe',
         name='John Doe',
-        image_url='http://example.com/john_doe.png',
+        profile='http://example.com/john_doe.png',
         bio='Software Developer',
         is_online=True
     )
@@ -23,7 +23,7 @@ with app.app_context():
     user2 = User(
         username='jane_smith',
         name='Jane Smith',
-        image_url='http://example.com/jane_smith.png',
+        profile='http://example.com/jane_smith.png',
         bio='Data Scientist',
         is_online=False
     )
@@ -75,7 +75,7 @@ with app.app_context():
     # Create a file attachment associated with the message
     file_attachment = FileAttachment(
         file_type='image/png',
-        message_id=message1.id  
+        message_id=message1.id
     )
     print('Attach file to message')
     db.session.add(file_attachment)

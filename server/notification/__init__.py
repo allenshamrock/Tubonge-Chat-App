@@ -4,7 +4,7 @@ from .routes import Notification
 from . import socketio
 from config import app
 
-notification_blueprint = Blueprint('notification_blueprint',__name__)
+notification_blueprint = Blueprint('notification',__name__)
 api = Api(notification_blueprint)
 
 api.add_resource(Notification, '/notification')

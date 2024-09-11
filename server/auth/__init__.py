@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_restful import Api 
 from .routes import Login,Logout,UserToken
 
-auth_blueprint = Blueprint('auth_blueprint',__name__)
+auth_blueprint = Blueprint('auth',__name__)
 api=Api(auth_blueprint)
 
 api.add_resource(Login,'/login')

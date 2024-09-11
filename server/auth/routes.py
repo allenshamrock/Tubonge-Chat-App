@@ -1,4 +1,4 @@
-from flask import session,request,make_response,jsonify
+from flask import request,make_response,jsonify
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token,create_refresh_token,get_jwt_identity,unset_jwt_cookies,jwt_required
 from config import app
@@ -8,7 +8,7 @@ from models import User
 class Login(Resource):
     def post(self):
         if request.content_type != 'application/json':
-            return jsonify({"error":"Content-Type must be application/json"}),415
+            return make_response(jsonify({"error": "Content-Type must be application/json"}), 415)
         
         data = request.get_json()
         username = data.get('username')
@@ -28,15 +28,16 @@ class Login(Resource):
                 }
 
                 if data:
-                    return data
+                    return make_response(jsonify(data),200)
                 
                 else:
-                    return jsonify({"error":"User not found"}),404
+                    return make_response(jsonify({"error": "User not found"}), 404)
                 
-            return jsonify({'error':'Invalid username or password'}),401 
+            return make_response(jsonify({'error': 'Invalid username or password'}), 401)
         except Exception as e:
             print({'error': str(e)})
-            return jsonify({'error':'An error occurred while processing your data'}),500
+            return make_response(jsonify({'error': 'An error occurred while processing your data'}), 500)
+
         
 class UserToken(Resource):
     @jwt_required()
