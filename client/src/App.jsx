@@ -1,11 +1,12 @@
 import React from "react";
 import "./App.css";
 import AppLayout from "../layout";
+import Sidebar from "./components/Sidebar";
 
 const App = () => {
   return (
     <AppLayout>
-      <p className="text-3xl text-red-600">App</p>
+     < Sidebar/>
     </AppLayout>
   );
 };
