@@ -6,33 +6,34 @@ import {
   Handshake,
   Logout,
 } from "lucide-react";
+import SidebarIcon from "./SidebarIcon";
 const icons = {
   top: [
     {
       label: "Message",
-      icon: "<MessageSquareText />",
+      icon: <MessageSquareText />,
       href: "/messages",
     },
     {
       label: "User",
-      icon: "<User />",
+      icon: <User />,
       href: "/friends",
     },
     {
       label: "UserPlus",
-      icon: "<UserPlus />",
+      icon: <UserPlus />,
       href: "/add-friend",
     },
     {
       label: "Handshake",
-      icon: "<Handshake />",
+      icon: <Handshake />,
       href: "/friend-requests",
     },
   ],
   bottom: [
     {
       label: "Logout",
-      icon: "<LogOut />",
+      icon: <Logout />,
       href: "/sign-out",
     },
     {},
@@ -58,7 +59,7 @@ const Sidebar = () => {
             setOpen(true);
           }}
         >
-          {/* <SidebarIcon icon={icons.bottom} /> */}
+          <SidebarIcon icon={icons.bottom} />
         </div>
         <SignOutModal
           open={open}
