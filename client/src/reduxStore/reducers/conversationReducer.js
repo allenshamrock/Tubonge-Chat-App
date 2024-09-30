@@ -1,5 +1,5 @@
 import * as types from "reduxStore/constants/conversationConstants";
-import { SIGN_OUT } from "reduxStore/rconstants/authConstants";
+import { SIGN_OUT } from "reduxStore/constants/authConstants";
 import { remove } from "utils/remove";
 const initState = {
   conversations: [],
@@ -86,6 +86,9 @@ const conversationReducer = (state = initState, action) => {
         errorConversations: null,
         errorSelectedConversation: null,
       };
+
+    default:
+      state;
   }
 };
 
