@@ -6,7 +6,7 @@ const DeleteProfile = () => {
 
   return (
     <>
-      <DeleteProfile
+      <DeleteProfileModal
         open={openModal}
         onClose={() => {
           setOpenModal(false);
