@@ -7,7 +7,7 @@ import FriendRequestCard from "components/cards/FriendRequestCard";
 import Routes from "./Routes";
 import BlockedCard from "components/cards/BlockedCard";
 import useWindowSize from "hooks/useWindowSize";
-const DiaplayPages = () => {
+const DisplayPages = () => {
   const searchFriends = useSelector((state) => state.friends.searchFriends);
   const conversation = useSelector(
     (state) => state.conversation.selectedConversation
@@ -59,4 +59,4 @@ const DiaplayPages = () => {
   );
 };
 
-export default DiaplayPages;
+export default DisplayPages;
