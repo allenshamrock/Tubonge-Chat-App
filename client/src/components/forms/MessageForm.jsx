@@ -35,7 +35,7 @@ const MessageForm = ({ message, onClose }) => {
     await dispatch(
       message
         ? editMessageAction(formData, message._id)
-        : sendMessage(formData, message._id)
+        : sendMessageAction(formData, conversation._id)
     );
     setLoading(false);
     setFormData({
