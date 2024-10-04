@@ -19,7 +19,7 @@ const profileReducer = (state = initState, action) => {
         isUser: null,
       };
 
-    case types.SIDEBAR:
+    case types.OPEN_SIDEBAR:
       return {
         ...state,
         open: true,
