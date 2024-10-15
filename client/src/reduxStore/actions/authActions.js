@@ -1,7 +1,7 @@
 import * as api from "redux store/api/authAPI";
 import * as types from "redux store/constants/authConstants";
-import { refreshTokenAction } from "./refreshTokenAction";
-import { isTokenValid } from "utils/isTokenValid";
+import { refreshTokenAction } from "./refreshToken";
+import { isTokenValid } from "../../utils/isTokenValid";
 
 export const signUpAction = (values, navigate) => async (dispatch) => {
   try {
