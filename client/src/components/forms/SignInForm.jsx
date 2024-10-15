@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PulseLoader } from "react-spinners";
-import Input from "components/common/Input";
-import Button from "components/common/Button";
-import Error from "components/common/Error";
+import Input from '../common/Input'
+import Button from "../common/Button";
+import Error from "../common/Error";
 
-import { signInActions, clearMessage } from "reduxStore/actions/authActions";
-import { SIGN_IN_FAIL } from "reduxStore/constants/authConstants";
+import {
+  signInActions,
+  clearMessage,
+} from "../../reduxStore/actions/authActions";
+import { SIGN_IN_FAIL } from "../../reduxStore/constants/authConstants";
 const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
