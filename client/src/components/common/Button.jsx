@@ -1,6 +1,6 @@
 import React from "react";
 import { cva } from "class-variance-authority";
-import { cn } from "utils/cn";
+import { cn } from "../../utils/cn";
 
 const Button = React.forwardRef(
   ({ variant, disabled, className, ...props }, ref) => {
