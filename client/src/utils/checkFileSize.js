@@ -1,4 +1,5 @@
 export const checkFileSize = (file) => {
+  // check if file size is greater tha 10MB
   if (file.size > 10 * 1024 * 1024) {
     return "Please upload an image that is less than 10MB in size";
   }
