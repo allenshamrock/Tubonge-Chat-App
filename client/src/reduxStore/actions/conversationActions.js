@@ -1,5 +1,5 @@
-import * as types from "redux store/constants/conversationConstants";
-import * as api from "redux store/api/conversationApi";
+import * as types from "../constants/conversationConstants";
+import * as api from "../api/conversationAPI";
 
 export const getConversationsAction = () => async (dispatch) => {
   try {

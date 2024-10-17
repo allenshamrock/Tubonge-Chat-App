@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Image, Trash2 } from "lucide-react";
 import { PulseLoader } from "react-spinners";
-import Error from "components/common/Error";
-import useUploadMedia from "hooks/useUploadMedia";
-import { checkFileSize } from "utils/checkFileSize";
+import Error from "../common/Error";
+import useUploadMedia from "../../hooks/useUploadMedia";
+import { checkFileSize } from "../../utils/checkFileSize";
 
 const AvatarUploadForm = ({ avatar, setAvatar }) => {
   const { loading, error, uploadFile } = useUploadMedia();

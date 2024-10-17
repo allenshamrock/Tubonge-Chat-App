@@ -1,14 +1,14 @@
-import SignUp from "pages/SignUp";
-import Home from "pages/Home";
-import Messages from "pages/Messages";
-import Friends from "pages/Friends";
-import AddFriends from "pages/AddFriends";
-import FriendRequests from "pages/FriendRequests";
+import Signup from "./pages/Signup";
+// import Home from "pages/Home";
+// import Messages from "pages/Messages";
+// import Friends from "pages/Friends";
+// import AddFriends from "pages/AddFriends";
+// import FriendRequests from "pages/FriendRequests";
 
 export const publicRoutes = [
   {
     path: "/sign-up",
-    element: <SignUp />,
+    element: <Signup />,
   },
 ];
 

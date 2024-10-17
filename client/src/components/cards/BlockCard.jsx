@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
-import { unblockFriendAction } from "reduxStore/actions/friendsAction";
+import { unblockFriendAction } from "../../reduxStore/actions/friendsActions";
 import CardContainer from "./CardContainer";
 import FriendCard from "./FriendCard";
 

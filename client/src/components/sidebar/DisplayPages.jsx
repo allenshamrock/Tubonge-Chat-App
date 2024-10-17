@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import Search from "components/sidebar/Search";
-import FriendCard from "components/cards/FriendCard";
-import FriendRequestCard from "components/cards/FriendRequestCard";
+import Search from "../sidebar/Search";
+import FriendCard from "../cards/FriendCard";
+import FriendRequestCard from "../cards/FriendRequestCard";
 import Routes from "./Routes";
-import BlockedCard from "components/cards/BlockedCard";
-import useWindowSize from "hooks/useWindowSize";
+import BlockedCard from "../cards/BlockCard";
+import useWindowSize from "../../hooks/useWindowSize";
 const DisplayPages = () => {
   const searchFriends = useSelector((state) => state.friends.searchFriends);
   const conversation = useSelector(

@@ -1,12 +1,12 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import CardContainer from "./CardCointainer";
+import CardContainer from "./CardContainer";
 import ProfileAvatar from "./ProfileAvatar";
 import FriendCard from "./FriendCard";
 import {
   acceptFriendRequest,
   rejectFriendRequest,
-} from "reduxStore/actions/friendsAction";
+} from "../../reduxStore/actions/friendsActions";
 
 const FriendRequestCard = ({ friend }) => {
   const dispatch = useDispatch();

@@ -1,13 +1,13 @@
 import { useMemo, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setInitialAuthState } from "reduxStore/actions/authActions";
+import { setInitialAuthState } from "./reduxStore/actions/authActions";
 import Sidebar from "./components/sidebar/Sidebar";
 import DisplayMessages from "./components/main/DisplayMessages";
 import ProfileSidebar from "./components/sidebar/ProfileSidebar";
 import DisplayPages from "./components/sidebar/DisplayPages";
 
-const privateRoutes = ({ user }) => {
+const PrivateRoute = ({ user }) => {
   const isAuthenticated = useMemo(() => {
     return (user, accessToken) => {
       return user && accessToken;
@@ -39,4 +39,4 @@ const privateRoutes = ({ user }) => {
   );
 };
 
-export default privateRoutes;
+export default PrivateRoute;

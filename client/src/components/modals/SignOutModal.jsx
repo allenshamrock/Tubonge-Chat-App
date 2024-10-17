@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Modal from "components/common/Modal";
-import Button from "components/common/Button";
-import { signOutAction } from "reduxStore/actions/authActions";
+import Modal from "../common/Modal";
+import Button from "../common/Button";
+import { signOutAction } from "../../reduxStore/actions/authActions";
 
 const SignOutModal = ({ open, onClose }) => {
   const dispatch = useDispatch();

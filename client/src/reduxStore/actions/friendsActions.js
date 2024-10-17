@@ -1,5 +1,5 @@
-import * as api from "redux store/api/friendsAPI";
-import * as types from "redux store/constants/friendsConstants";
+import * as api from "../api/friendAPI";
+import * as types from "../constants/friendsConstant";
 
 export const getFriendsAction = () => async (dispatch) => {
   try {

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PencilLine } from "lucide-react";
-import Button from "components/common/BUtton";
-import Input from "components/common/Input";
-import Modal from "components/common/Modal";
-import AvatarUploadForm from "components/form/AvatarUploadForm";
-import Error from "components/common/Error";
-import { editProfileAction } from "reduxStore/actions/authActions";
+import Button from "../common/Button";
+import Input from "../common/Input";
+import Modal from "../common/Modal";
+import AvatarUploadForm from "../forms/AvatarUploadForm";
+import Error from "../common/Error";
+import { editProfileAction } from "../../reduxStore/actions/authActions";
 
 const EditProfileModal = ({ user, open, close }) => {
   const dispatch = useDispatch();

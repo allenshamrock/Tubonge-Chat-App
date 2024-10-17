@@ -4,7 +4,7 @@ import {
   User,
   UserPlus,
   Handshake,
-  Logout,
+  LogOut,
 } from "lucide-react";
 import SidebarIcon from "./SidebarIcon";
 const icons = {
@@ -33,7 +33,7 @@ const icons = {
   bottom: [
     {
       label: "Logout",
-      icon: <Logout />,
+      icon: <LogOut />,
       href: "/sign-out",
     },
     {},

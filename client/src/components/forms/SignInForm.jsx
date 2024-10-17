@@ -7,7 +7,7 @@ import Button from "../common/Button";
 import Error from "../common/Error";
 
 import {
-  signInActions,
+  signInAction,
   clearMessage,
 } from "../../reduxStore/actions/authActions";
 import { SIGN_IN_FAIL } from "../../reduxStore/constants/authConstants";

@@ -4,9 +4,9 @@ import { ClipLoader } from "react-spinners";
 import {
   removeFriendAction,
   sendFriendRequestAction,
-} from "reduxStore/actions/friendsAction";
+} from "../../reduxStore/actions/friendsActions";
 import CardContainer from "./CardContainer";
-import { getSelectedConversationAction } from "reduxStore/actions/conversationActions";
+import { getSelectedConversationAction } from "../../reduxStore/actions/conversationActions";
 import ProfileAvatar from "./ProfileAvatar";
 const FriendCard = ({ friend, pending = false, friends = false }) => {
   const dispatch = useDispatch();

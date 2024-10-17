@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import EditProfileModal from "components/modals/EditProfile";
-import Button from "components/common/Button";
-import useProfileHandlers from "hooks/useProfileHandlers";
+import EditProfileModal from "../modals/EditProfileModal";
+import Button from "../common/Button";
+import useProfileHandlers from "../../hooks/useProfileHandlers";
 const EditProfile = () => {
   const user = useSelector((state) => state.auth.user);
   const [openModal, setOpenModal] = useState(false);

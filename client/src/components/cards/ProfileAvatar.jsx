@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { OPEN_SIDEBAR } from "reduxStore/constants/profileConstants";
+import { OPEN_SIDEBAR } from "../../reduxStore/constants/profileConstants";
 const ProfileAvatar = ({ friend }) => {
   const dispatch = useDispatch();
 

@@ -1,5 +1,5 @@
-import * as api from "redux store/api/authAPI";
-import * as types from "redux store/constants/authConstants";
+import * as api from "../api/authAPI";
+import * as types from "../constants/authConstants";
 import { refreshTokenAction } from "./refreshToken";
 import { isTokenValid } from "../../utils/isTokenValid";
 

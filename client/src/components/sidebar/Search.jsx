@@ -3,10 +3,10 @@ import { debounce } from "lodash";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import Input from "components/common/Input";
-import Error from "components/common/Error";
-import { searchFriendsAction } from "reduxStore/actions/friendsAction";
-import { CLEAR_SEARCH_FREINDS } from "reduxStore/constants/freindsConstants";
+import Input from "../common/Input";
+import Error from "../common/Error";
+import { searchFriendsAction } from "../../reduxStore/actions/friendsActions";
+import { CLEAR_SEARCH_FREINDS } from "../../reduxStore/constants/friendsConstant";
 
 const Search = () => {
   const [inputValue, setInputValue] = useState("");

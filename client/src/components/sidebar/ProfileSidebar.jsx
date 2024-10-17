@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { CLOSE_SIDEBAR } from "reduxStore/constants/profileContants";
-import BlockFriend from "./BlockFriend";
+import { CLOSE_SIDEBAR } from "../../reduxStore/constants/profileConstants"
 import EditProfile from "./EditProfile";
 import DeleteProfile from "./DeleteProfile";
-import Button from "components/common/Button";
-import SignOutModal from "components/modals/SignOutModal";
+import Button from "../common/Button";
+import SignOutModal from "../modals/SignOutModal";
 const ProfileSidebar = () => {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.profile.open);

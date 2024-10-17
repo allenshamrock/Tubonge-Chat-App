@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import DeleteProfileModal from "components/modals/DeleteProfileModal";
-import Button from "components/common/Button";
+import DeleteProfileModal from "../modals/DeleteProfileModal";
+import Button from "../common/Button";
 const DeleteProfile = () => {
   const [openModal, setOpenModal] = useState(false);
 
